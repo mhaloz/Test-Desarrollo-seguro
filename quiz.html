@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Cuestionario Ciberseguridad Web</title>
+  <style>
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #f5f7fb;
+      margin: 0;
+      padding: 2rem;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .quiz-container {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .question {
+      background: #ffffff;
+      border-radius: 10px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+    }
+
+    .question-title {
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+    }
+
+    .question-text {
+      margin: 0.25rem 0 1rem;
+    }
+
+    .options {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .option {
+      margin-bottom: 0.35rem;
+    }
+
+    .option label {
+      cursor: pointer;
+    }
+
+    .feedback {
+      margin-top: 0.75rem;
+      padding: 0.75rem 1rem;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      display: none; /* se muestra cuando el usuario responde */
+    }
+
+    .feedback.correct {
+      background: #e6ffed;
+      border: 1px solid #52c41a;
+    }
+
+    .feedback.incorrect {
+      background: #fff1f0;
+      border: 1px solid #ff4d4f;
+    }
+
+    .feedback strong {
+      display: block;
+      margin-bottom: 0.25rem;
+    }
+
+    .correct-answer {
+      font-weight: 600;
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <h1>Cuestionario de Ciberseguridad Web</h1>
+  <div class="quiz-container" id="quiz"></div>
+
+  <script>
+    const questions = [
+      {
+        id: 1,
+        title: "Pregunta 1",
+        text: "Señala la respuesta incorrecta. Las fuentes de las vulnerabilidades se deben a:",
+        options: {
+          A: "Fallos provenientes de la codificación de los diseños del software realizados.",
+          B: "Fallos provenientes de la cadena de distribución del software.",
+          C: "Los sistemas hardware o software contienen frecuentemente fallos de diseño que pueden ser utilizados para realizar un ataque.",
+          D: "La instalación de software por defecto implica, por lo general, la instalación de servicios que no se usan, pero que pueden presentar debilidades que comprometan la máquina."
+        },
+        // La opción incorrecta (la que se debe marcar) es B
+        correct: "B",
+        explanation:
+          "Fallos de configuración. La instalación de software por defecto implica por lo general la instalación de servicios que no se usan, pero que pueden presentar debilidades que comprometan la máquina."
+      },
+      {
+        id: 2,
+        title: "Pregunta 2",
+        text: "Señala la respuesta incorrecta. Entre las técnicas y mecanismos para salvaguardar la integridad tenemos, por ejemplo:",
+        options: {
+          A: "Identificación del modo de trasmisión y procesado de los datos por la aplicación.",
+          B: "Uso de arquitecturas de alta disponibilidad, con diferentes tipos de redundancias.",
+          C: "Uso de firma digital.",
+          D: "Estricta gestión de sesiones."
+        },
+        // La opción incorrecta (no está relacionada con integridad sino con disponibilidad)
+        correct: "B",
+        explanation:
+          "Las arquitecturas de alta disponibilidad y redundancia están orientadas principalmente a la disponibilidad, no a la integridad. La integridad se protege con técnicas como cifrado, firma digital, gestión de sesiones, monitorización de integridad y transmisión cifrada."
+      },
+      {
+        id: 3,
+        title: "Pregunta 3",
+        text: "Para conseguir que el desarrollo de una aplicación posea las propiedades y principios de diseño del software seguro, se necesita que el personal de diseño y desarrollo lleve a cabo:",
+        options: {
+          A: "Perspectiva administrador.",
+          B: "Perspectiva defensor.",
+          C: "Perspectiva usuario.",
+          D: "Perspectiva atacante."
+        },
+        correct: "D",
+        explanation:
+          "El equipo de desarrollo debe tomar la perspectiva del atacante para comprender la naturaleza de las amenazas y concentrar los esfuerzos defensivos en las áreas de mayor riesgo."
+      },
+      {
+        id: 4,
+        title: "Pregunta 4",
+        text: "¿Cómo se define la resiliencia?",
+        options: {
+          A: "Capacidad de resistencia y tolerancia a los ataques realizados por los agentes maliciosos (malware, hackers, etc.).",
+          B: "Capacidad que garantiza la posibilidad de imputar las acciones relacionadas en un software a la persona, entidad o proceso que la ha originado.",
+          C: "Capacidad del software para aislar, contener y limitar los daños ocasionados por fallos causados por ataques de vulnerabilidades explotables del mismo, recuperarse lo más rápido posible de ellos y reanudar su operación en o por encima de cierto nivel mínimo predefinido de servicio aceptable en un tiempo oportuno.",
+          D: "Capacidad del software para «tolerar» los errores y fallos que resultan de ataques con éxito y seguir funcionando como si los ataques no se hubieran producido."
+        },
+        correct: "C",
+        explanation:
+          "La resiliencia es la capacidad del software para aislar, contener y limitar los daños, recuperarse rápidamente de ellos y reanudar su operación en un nivel mínimo de servicio aceptable en un tiempo oportuno."
+      },
+      {
+        id: 5,
+        title: "Pregunta 5",
+        text: "Indica cuál de las siguientes respuestas no es una causa de aparición de vulnerabilidades en el software:",
+        options: {
+          A: "No realización de pruebas de seguridad basadas en riesgo.",
+          B: "Cambios de requisitos del proyecto durante la etapa de especificación.",
+          C: "Mezcla de código proveniente de varios orígenes.",
+          D: "Tamaño excesivo y complejidad de las aplicaciones."
+        },
+        correct: "B",
+        explanation:
+          "Los cambios de requisitos del proyecto durante la etapa de especificación son correctos. Después de esta etapa no deben ya cambiarse, pues es una causa de aparición de vulnerabilidades."
+      },
+      {
+        id: 6,
+        title: "Pregunta 6",
+        text: "Indica la respuesta incorrecta respecto al ataque a las aplicaciones durante las diferentes fases de su ciclo de vida:",
+        options: {
+          A: "Distribución e instalación. Ocurre cuando el instalador del software no bastiona la plataforma en la que lo instala.",
+          B: "Desarrollo. Un desarrollador puede alterar de forma intencionada o no el software bajo desarrollo.",
+          C: "Operación. Cualquier software que se ejecuta en una plataforma conectada a la red tiene sus vulnerabilidades expuestas durante su funcionamiento. El nivel de exposición variará dependiendo de si la red es privada o pública, conectada o no a Internet, y si el entorno de ejecución del software ha sido configurado para minimizar sus vulnerabilidades.",
+          D: "Mantenimiento o sostenimiento. No publicación de parches de las vulnerabilidades detectadas en el momento oportuno o incluso introducción de código malicioso por el personal de mantenimiento en las versiones actualizadas del código."
+        },
+        correct: "A",
+        explanation:
+          "La forma correcta sería: Distribución e instalación. Ocurre cuando no se protege el software evitando manipulaciones antes de enviarlo o publicarlo. Del mismo modo, si el instalador del software no bastiona la plataforma en la que lo instala o la configura de forma insegura, queda a merced de los atacantes."
+      },
+      {
+        id: 7,
+        title: "Pregunta 7",
+        text: "Señala la respuesta incorrecta. Algunas de las opciones específicas de diseño del software que lo simplifican son:",
+        options: {
+          A: "Favorecer procesos deterministas sobre los no deterministas.",
+          B: "Limitar el número de estados posibles en el software.",
+          C: "El uso de técnicas de interrupciones en lugar de sondeo.",
+          D: "Desacoplar los componentes u procesos para minimizar las interdependencias entre ellos."
+        },
+        correct: "C",
+        explanation:
+          "La opción C no es correcta, es justo lo contrario. Se debe favorecer el uso de técnicas de sondeo en lugar de interrupciones para simplificar el diseño del software."
+      },
+      {
+        id: 8,
+        title: "Pregunta 8",
+        text: "¿A qué principio de diseño le corresponde la siguiente afirmación? «Estrategia de protección consistente en introducir múltiples capas de seguridad, que permitan reducir la probabilidad de compromiso en caso de que una de las capas falle y en el peor de los casos minimizar el impacto».",
+        options: {
+          A: "Seguridad por defecto.",
+          B: "Separación de privilegios.",
+          C: "Separación de dominios.",
+          D: "Defensa en profundidad."
+        },
+        correct: "D",
+        explanation:
+          "Es la definición de defensa en profundidad. Este principio establece múltiples capas de seguridad para garantizar que si una falla, las otras sigan protegiendo el sistema, minimizando el impacto potencial de un compromiso."
+      },
+      {
+        id: 9,
+        title: "Pregunta 9",
+        text: "Señala la respuesta incorrecta. El cálculo de código CVSS se realiza en base a tres tipos de métricas ambientales:",
+        options: {
+          A: "Métricas estadísticas.",
+          B: "Métricas base.",
+          C: "Métricas temporales.",
+          D: "Métricas ambientales."
+        },
+        correct: "A",
+        explanation:
+          "El cálculo del código CVSS se realiza en base a tres tipos de métricas: base, temporales y ambientales, siendo las dos últimas opcionales."
+      },
+      {
+        id: 10,
+        title: "Pregunta 10",
+        text: "Señala la respuesta incorrecta. Los elementos clave de un proceso de S-SDLC son:",
+        options: {
+          A: "Gestión de configuración versiones.",
+          B: "Pruebas de seguridad.",
+          C: "Hitos de control en las fases del SDLC.",
+          D: "Despliegue y distribución."
+        },
+        correct: "D",
+        explanation:
+          "Las opciones «gestión de configuración de versiones», «pruebas de seguridad» e «hitos de control en las fases del SDLC» son correctas; la incorrecta es «despliegue y distribución»."
+      },
+      {
+        id: 11,
+        title: "Pregunta 11",
+        text: "Señala la respuesta correcta. ¿Qué incluye la seguridad del software?",
+        options: {
+          A: "Patrones de codificación.",
+          B: "Principios de diseño seguro.",
+          C: "Casos de uso.",
+          D: "Buenas prácticas de codificación."
+        },
+        correct: "B",
+        explanation:
+          "La seguridad del software es «el conjunto de principios de diseño y buenas prácticas a implantar en el SDLC para detectar, prevenir y corregir los defectos de seguridad en el desarrollo y adquisición de aplicaciones, de forma que se obtenga software de confianza y robusto frente ataques maliciosos, que realice sólo las funciones para las que fue diseñado, que esté libre de vulnerabilidades, ya sean intencionalmente diseñadas o accidentalmente insertadas durante su ciclo de vida, y se asegure su integridad, disponibilidad y confidencialidad»."
+      },
+      {
+        id: 12,
+        title: "Pregunta 12",
+        text: "Señala la respuesta correcta. Respecto a los casos de uso de seguridad:",
+        options: {
+          A: "Analizan y especifican los requisitos de seguridad funcionales.",
+          B: "Analizan y especifican las amenazas a la seguridad.",
+          C: "Análisis de vulnerabilidades de activos y amenazas.",
+          D: "Análisis forense de las actividades maliciosas."
+        },
+        correct: "A",
+        explanation:
+          "A los casos de uso de seguridad analizan y especifican los requisitos de seguridad funcionales, permitiendo definir claramente qué debe protegerse y cómo debe comportarse el sistema frente a escenarios de seguridad."
+      },
+      {
+        id: 13,
+        title: "Pregunta 13",
+        text: "Respecto a la ingeniería de requisitos de seguridad, esta NO incluye:",
+        options: {
+          A: "Requisitos de software seguro. Requisitos que afectan directamente a la probabilidad de que el software sea seguro.",
+          B: "Requisitos servicios de seguridad.",
+          C: "Los requerimientos no funcionales de seguridad deben especificar: restricciones que el software implementar para poder evitar ataques.",
+          D: "Los requerimientos no funcionales de seguridad deben especificar: los controles y normas que rigen los procesos de desarrollo, implementación y operación del software."
+        },
+        correct: "D",
+        explanation:
+          "Es incorrecto pues todo lo relativo a la especificación de los requisitos de seguridad debido a la normativa se enmarca dentro de los requisitos operacionales, no dentro de los requisitos de seguridad en ingeniería de requisitos."
+      },
+      {
+        id: 14,
+        title: "Pregunta 14",
+        text: "¿Cuál de las siguientes respuestas es una de las perspectivas que el equipo de desarrollo tiene que adoptar a la hora de diseñar unas pruebas de seguridad basadas en el riesgo?:",
+        options: {
+          A: "Perspectiva gerencia.",
+          B: "Perspectiva atacante.",
+          C: "Perspectiva usuario.",
+          D: "Perspectiva del analista."
+        },
+        correct: "B",
+        explanation:
+          "La perspectiva atacante y defensor es una de las perspectivas clave que el equipo de desarrollo debe adoptar para diseñar pruebas de seguridad efectivas basadas en riesgos."
+      },
+      {
+        id: 15,
+        title: "Pregunta 15",
+        text: "¿Cuál de estas opciones NO es una razón principal para añadir prácticas de seguridad en el SDLC?",
+        options: {
+          A: "Mayor probabilidad de capturar adecuadamente los requisitos.",
+          B: "Mayor probabilidad de tomar decisiones de diseño correctas y no cometer errores involuntarios de codificación.",
+          C: "Dificultad de los agentes maliciosos para explotar vulnerabilidades y debilidades del software.",
+          D: "Mayor probabilidad de que el software funcione correctamente."
+        },
+        correct: "D",
+        explanation:
+          "La opción D es incorrecto pues combina tres razones válidas: mayor probabilidad de capturar requisitos, tomar decisiones de diseño correctas, y aumentar la dificultad para explotar vulnerabilidades. Sin embargo, el funcionamiento correcto del software NO es específicamente una razón principal para añadir prácticas de seguridad en el SDLC, sino una consecuencia indirecta."
+      },
+      {
+        id: 16,
+        title: "Pregunta 16",
+        text: "Señala la respuesta correcta. Un método sistemático para caracterizar la seguridad de un sistema, basado en la combinación y dependencias de las vulnerabilidades de este, que un atacante puede aprovechar para comprometarlo.",
+        options: {
+          A: "Método de ataque.",
+          B: "Patrones de ataque.",
+          C: "Árboles de ataque.",
+          D: "Modelo de ataque."
+        },
+        correct: "C",
+        explanation:
+          "Es la definición de árbol de ataque. Un árbol de ataque es una representación gráfica y sistemática que muestra cómo un atacante puede aprovechar combinaciones de vulnerabilidades para comprometer un sistema."
+      },
+      {
+        id: 17,
+        title: "Pregunta 17",
+        text: "Señala la respuesta incorrecta sobre los casos de abuso.",
+        options: {
+          A: "Los casos de abuso constituyen unas buenas prácticas para la obtención de los requisitos funcionales de una aplicación, referidos a actividades que debería realizar el sistema.",
+          B: "Un caso de abuso es la inversa de un caso de uso, es decir, una función que el sistema no debe permitir o una secuencia completa de acciones que resulta en una pérdida para la organización.",
+          C: "Los casos de abuso, o casos de mal uso, son un instrumento que puede ayudar a pensar de la misma forma que lo hacen los atacantes.",
+          D: "Establecen la base para otros casos de uso de seguridad que proporcionan los medios para contrarrestar o mitigar las amenazas capturadas en los mismos y una manera altamente reutilizable de organizar, analizar u especificar los requisitos de seguridad."
+        },
+        correct: "A",
+        explanation:
+          "Los diagramas de casos de uso constituyen buenas prácticas para la obtención de los requisitos no funcionales de una aplicación, no funcionales. La opción A es incorrecta porque confunde si los casos de abuso son para requisitos funcionales o no funcionales."
+      },
+      {
+        id: 18,
+        title: "Pregunta 18",
+        text: "Indica en qué fase del ciclo de vida de desarrollo del software NO es aplicable el análisis de riesgo arquitectónico.",
+        options: {
+          A: "Especificación de requisitos.",
+          B: "Diseño del sistema.",
+          C: "Codificación.",
+          D: "Operación."
+        },
+        correct: "C",
+        explanation:
+          "La única fase del SDLC donde no se aplica el análisis de riesgo arquitectónico es la fase de codificación. El análisis de riesgo arquitectónico se realiza en las fases de especificación de requisitos, diseño del sistema y operación, pero no es aplicable específicamente en la fase de codificación."
+      },
+      {
+        id: 19,
+        title: "Pregunta 19",
+        text: "Señala la respuesta correcta. En los apuntes de la asignatura se presentan una serie de recomendaciones de buenas prácticas:",
+        options: {
+          A: "Manejo de los datos con precaución.",
+          B: "Confiar en software de terceros en operaciones críticas.",
+          C: "Usar listas de errores.",
+          D: "Usar en el código nombres relativos de ficheros."
+        },
+        correct: "A",
+        explanation:
+          "Buenas prácticas: formarse uno mismo; formación continua; manejo de los datos con precaución; rehusar código que ha sido testeado y probado; insistir en el proceso de revisión de código; usar listas de comprobación; revisar el proceso de mantenimiento."
+      },
+      {
+        id: 20,
+        title: "Pregunta 20",
+        text: "Señala la respuesta correcta. ¿Qué tipo de vulnerabilidad se comete en este código?\n\nString user_state = \"Unknown\";\ntry {\n  HttpSession user_session = Init.sessions.get(tmpUser.getUser());\n  user_state = user_session == null ? \"Unknown\": (String)user_session.getAttribute(\"USER_STATUS\");\n  user_state = user_state == null ? \"Available\": user_state;\n}\n...\n%>\n<%-user_state %>",
+        options: {
+          A: "Integer overflows.",
+          B: "Desbordamiento de buffer.",
+          C: "Uso de datos invalidados.",
+          D: "Use after free."
+        },
+        correct: "C",
+        explanation:
+          "Sin unos límites de confianza bien establecidos los programadores inevitablemente perderán la pista de los datos que han sido validados y los que no, llevando al hecho de que se usarán datos en la aplicación sin haber sido validados."
+      },
+      {
+        id: 21,
+        title: "Pregunta 21",
+        text: "Señala la respuesta correcta. ¿Qué tipo de vulnerabilidad se comete en este código?\n\nstruct hostent *hp;\nstruct in_addr myaddr;\nchar* tHost = \"trustme.com\";\nmyaddr.s_addr = inet_addr(ip_addr_string);\nhp = gethostbyaddr((char *) &myaddr, sizeof(struct in_addr), AF_INET);\nif (hp && !strncmp(hp->h_name, tHost, sizeof(tHost))) {\n  trusted = true;\n} else {\n  trusted = false;\n}",
+        options: {
+          A: "Buffer overflow.",
+          B: "Validación límites de confianza.",
+          C: "Validación de entrada DNS.",
+          D: "Memory leaks."
+        },
+        correct: "C",
+        explanation:
+          "El código del ejemplo se utiliza una búsqueda de DNS para determinar si una petición de entrada es desde un host de confianza. Si los atacantes envenenan la caché de DNS, pueden obtener el estatus de confianza. Hay otro problema también confía en las solicitudes procedentes del dominio do_not_trustme.com"
+      },
+      {
+        id: 22,
+        title: "Pregunta 22",
+        text: "Señala la respuesta correcta. ¿Qué tipo de vulnerabilidad se comete en este código?\n\nstruct hostent *hp;\nstruct in_addr myaddr;\nchar* tHost = \"trustme.com\";\nmyaddr.s_addr = inet_addr(ip_addr_string);\nhp = gethostbyaddr((char *) &myaddr, sizeof(struct in_addr), AF_INET);\nif (hp && !strncmp(hp->h_name, tHost, sizeof(tHost))) {\n  trusted = true;\n} else {\n  trusted = false;\n}",
+        options: {
+          A: "Buffer overflow.",
+          B: "Validación límites de confianza.",
+          C: "Validación de entrada DNS.",
+          D: "Memory leaks."
+        },
+        correct: "C",
+        explanation:
+          "El código del ejemplo se utiliza una búsqueda de DNS para determinar si una petición de entrada es desde un host de confianza. Si los atacantes envenenan la caché de DNS, pueden obtener el estatus de confianza. Hay otro problema también confía en las solicitudes procedentes del dominio do_not_trustme.com"
+      },
+      {
+        id: 23,
+        title: "Pregunta 23",
+        text: "Señala la respuesta correcta. ¿Es el siguiente código correcto?\n\nif (path != null &&\npath.length() > 0 && path.length() <- MAXPATH) {\n  fileOperation(path);\n}",
+        options: {
+          A: "Es correcto.",
+          B: "Es incorrecto.",
+          C: "No se puede determinar.",
+          D: "Ninguna de las anteriores."
+        },
+        correct: "A",
+        explanation:
+          "El código es correcto, realiza una simple comprobación de la longitud de una ruta a un fichero."
+      },
+      {
+        id: 24,
+        title: "Pregunta 24",
+        text: "Señala la respuesta correcta. ¿Qué tipo de vulnerabilidad se comete en este código?\n\nu_int nresp;\nnresp = packet_get_int();\nif (nresp > 0) {\n  response = xmalloc(nresp*sizeof(char));\n  for (i = 0; i < nresp; i++)\n    response[i] = packet_get_string(NULL);\n}",
+        options: {
+          A: "Integer overflows.",
+          B: "Desbordamiento de buffer.",
+          C: "Format string.",
+          D: "Use after free."
+        },
+        correct: "A",
+        explanation:
+          "El ejemplo es un extracto de OpenSSH 3.3 que muestra un caso clásico de integer overflow. Si el valor de nresp es 1 073 741 824 y sizeof(char*) tiene un valor típico de 4, el resultado de la operación nresp * sizeof(char*) desborda, y el argumento a xmalloc() será 0. Debido a que el buffer asignado es muy insuficiente, las iteraciones del bucle posteriores desbordarán la pila."
+      },
+      {
+        id: 25,
+        title: "Pregunta 25",
+        text: "Señala la respuesta incorrecta. Al realizar una buena validación de entrada por defecto, una mejora con API de seguridad aumenta la capacidad de hacer lo siguiente:",
+        options: {
+          A: "Entender y mantener la lógica de validación de entrada.",
+          B: "Actualizar y modificar el intento de introducir la validación coherentemente.",
+          C: "Aplicar una validación de entrada sensible a contexto coherentemente a toda la entrada.",
+          D: "Descentralizar la lógica de validación."
+        },
+        correct: "D",
+        explanation:
+          "Una mejora con API de seguridad aumenta la capacidad de hacer lo siguiente: aplicar una validación de entrada sensible a contexto coherentemente a toda la entrada; entender y mantener la lógica de validación de entrada; actualizar y modificar el intento de introducir la validación coherentemente; ser constante. Si la validación de entrada no es la de por defecto, es fácil para un desarrollador olvidarse de hacerlo. La opción incorrecta es descentralizar la lógica de validación, ya que se debe centralizar para mantener consistencia."
+      },
+      {
+        id: 26,
+        title: "Pregunta 26",
+        text: "Señala la respuesta incorrecta. En el desarrollo de aplicaciones seguras y confiables se requiere el seguimiento de unas buenas prácticas:",
+        options: {
+          A: "Insistir en el proceso de revisión de código.",
+          B: "Formación continua.",
+          C: "Invocar programas en los que no se confía desde otros en los que se confía.",
+          D: "Manejo de los datos con precaución."
+        },
+        correct: "C",
+        explanation:
+          "Malas prácticas: usar en el código nombres relativos de ficheros; referirse a un fichero con el mismo nombre dos veces en el mismo programa; invocar programas en los que no se confía desde otros en los que se confía; asumir que los usuarios no son maliciosos; no utilizar librerías seguras que generan números aleatorios como random; invocar shell desde líneas de comandos; utilizar direcciones IP, MAC o direcciones de correo para identificar usuarios; utilizar zonas de memoria accesibles por todos los usuarios; almacenar información sensible en una base de datos sin protección; visualizar passwords en las pantallas de los usuarios."
+      },
+      {
+        id: 27,
+        title: "Pregunta 27",
+        text: "Señala la respuesta correcta. ¿Cuál es la mejor forma de prevenir ataques de desbordamiento de buffer?",
+        options: {
+          A: "Tener precauciones al realizar conversiones de tipo.",
+          B: "Utilizar un lenguaje de programación que fuerce la comprobación de tipos y de memoria.",
+          C: "Comprobar los límites de memoria.",
+          D: "Comprobar las longitudes del buffer."
+        },
+        correct: "B",
+        explanation:
+          "La mejor forma de prevenir el desbordamiento de buffer es utilizar un lenguaje de programación que fuerce la comprobación de tipos y de memoria de forma que su gestión sea segura. C#, Java, Python, Ruby o dialectos de C como CCured y Cyclone son lenguajes de este tipo."
+      },
+      {
+        id: 28,
+        title: "Pregunta 28",
+        text: "Señala la respuesta correcta. Las perspectivas de las pruebas de seguridad basadas en el riesgo son las siguientes:",
+        options: {
+          A: "Perspectiva gerencia.",
+          B: "Perspectiva atacante y defensor.",
+          C: "Perspectiva usuario.",
+          D: "Perspectiva del analista."
+        },
+        correct: "B",
+        explanation:
+          "Perspectiva atacante y defensor."
+      },
+      {
+        id: 29,
+        title: "Pregunta 29",
+        text: "Señala la respuesta correcta. El principal problema de las herramientas de análisis estático es:",
+        options: {
+          A: "Falsos negativos que produce pues produce una falsa sensación de seguridad, no los falsos positivos.",
+          B: "Gran cantidad de defectos que encuentra.",
+          C: "Reglas de la herramienta.",
+          D: "Falsos positivos que produce."
+        },
+        correct: "A",
+        explanation:
+          "El principal problema de las herramientas de análisis estático son los falsos negativos que produce pues produce una falsa sensación de seguridad, no los falsos positivos."
+      },
+      {
+        id: 30,
+        title: "Pregunta 30",
+        text: "Señala la respuesta incorrecta. Las herramientas de análisis estático realizan varios tipos de análisis:",
+        options: {
+          A: "Taint Propagation.",
+          B: "Análisis puntual.",
+          C: "Model checking.",
+          D: "Análisis de flujo de datos."
+        },
+        correct: "B",
+        explanation:
+          "Los tipos de análisis que realiza una herramienta de análisis estático son: análisis estructural; análisis de flujo de control; análisis de flujo de datos; taint propagation; pointer aliasing; análisis local; análisis global; interpretación abstracta; transformadores de predicados; model checking; SAT Solvers."
+      },
+      {
+        id: 31,
+        title: "Pregunta 31",
+        text: "Señala la respuesta correcta. Los tests de penetración:",
+        options: {
+          A: "Demuestran que ningún defecto existe.",
+          B: "Revisan el código.",
+          C: "El entendimiento del ambiente de ejecución y de los problemas de configuración es el mejor resultado de cualquier prueba de penetración.",
+          D: "Las conclusiones son repetibles a través de equipos diferentes y varían extensamente dependiendo de la habilidad y la experiencia de los probadores."
+        },
+        correct: "C",
+        explanation:
+          "El entendimiento del ambiente de ejecución y de los problemas de configuración es el mejor resultado de cualquier prueba de penetración."
+      },
+      {
+        id: 32,
+        title: "Pregunta 32",
+        text: "Señala la respuesta correcta. A la hora de realizar la distribución y despliegue del software desarrollado es recomendable el realizar las siguientes buenas prácticas:",
+        options: {
+          A: "Distribuir el software con una configuración por defecto segura y lo más restrictiva posible.",
+          B: "Proporcionar una herramienta de instalación automática.",
+          C: "Cambio los valores de configuración predeterminados durante el desarrollo.",
+          D: "Todas las anteriores."
+        },
+        correct: "D",
+        explanation:
+          "Otras buenas prácticas a la hora de realizar la distribución y despliegue del software desarrollado son: utilizar mecanismos de distribución estándar; realizar una guía de configuración de seguridad; establecer un medio de autenticación para la persona que va a ejecutar la instalación y configuración; revisar y \"limpiar\" todo el código fuente por el visible usuario."
+      },
+      {
+        id: 33,
+        title: "Pregunta 33",
+        text: "Señala la respuesta incorrecta. El análisis estático de código fuente es adecuado para identificar problemas de seguridad por ciertas razones:",
+        options: {
+          A: "Las herramientas de análisis estático comprueban el código a fondo y coherentemente, sin ninguna tendencia, que a veces los programadores según su criterio podrían tener sobre algunas partes del código que pudieran ser más \"interesantes\" desde una perspectiva de seguridad o partes del código que pudieran ser más fáciles para realizar las pruebas dinámicas.",
+          B: "Examinando el código en sí mismo, las herramientas de análisis estático a menudo pueden indicar la causa de origen de un problema de seguridad, no solamente uno de sus síntomas.",
+          C: "Cuando un investigador de seguridad descubre una nueva variedad de ataque, las herramientas de análisis estático no ayudan a comprobar de nuevo una gran cantidad de código para ver dónde el nuevo ataque podría tener éxito.",
+          D: "El análisis estático puede encontrar errores tempramente en el desarrollo, aún antes de que el programa sea ejecutado por primera vez."
+        },
+        correct: "C",
+        explanation:
+          "Cuando un investigador de seguridad descubre una nueva variedad de ataque, las herramientas de análisis estático ayudan a comprobar de nuevo una gran cantidad de código para ver dónde el nuevo ataque podría tener éxito."
+      },
+      {
+        id: 34,
+        title: "Pregunta 34",
+        text: "Señala la respuesta correcta. La principal misión de los tests de penetración es:",
+        options: {
+          A: "Revisar estáticamente el código del sistema.",
+          B: "Comprobar las vulnerabilidades del software.",
+          C: "Verificar cómo el software se comporta y resiste ante diferentes tipos de ataque.",
+          D: "Probar la seguridad de la arquitectura del software."
+        },
+        correct: "C",
+        explanation:
+          "La comprobación de la eficacia de las salvaguardas implementadas se realiza principalmente mediante las pruebas de penetración, que tiene como principal misión verificar cómo el software se comporta y resiste ante diferentes tipos de ataque."
+      },
+      {
+        id: 35,
+        title: "Pregunta 35",
+        text: "Señala la respuesta correcta. Una herramienta de análisis de código reporta que existe una vulnerabilidad de inyección SQL. Sin embargo, después de la correspondiente verificación, se comprueba que en realidad no existe tal vulnerabilidad. ¿Qué tipo de limitación de las herramientas de análisis de código se ha expuesto?",
+        options: {
+          A: "Un falso positivo, pues el error no existe.",
+          B: "Un falso negativo.",
+          C: "Una vulnerabilidad específica de un lenguaje de programación.",
+          D: "Ninguna de las anteriores."
+        },
+        correct: "A",
+        explanation:
+          "Un falso positivo es cuando la herramienta reporta una vulnerabilidad que en realidad no existe. En este caso, el análisis reportó una inyección SQL que después de verificación resultó no existir, siendo un falso positivo."
+      },
+      {
+        id: 36,
+        title: "Pregunta 36",
+        text: "Señala la respuesta incorrecta. Con respecto a los errores y excepciones:",
+        options: {
+          A: "Si un método codificado en Java no incluye la cláusula checked entonces todos los objetos que lo utilicen deben manejar la excepción o declararla en el método.",
+          B: "Los compiladores de Java no han cumplido sus reglas en cuanto a excepciones checked.",
+          C: "Todas las excepciones en C++ son checked.",
+          D: "Las excepciones unchecked no tienen que ser declaradas o manejadas."
+        },
+        correct: "C",
+        explanation:
+          "La afirmación sobre C++ es incorrecta. En C++, no existe el concepto de excepciones \"checked\" como en Java. En C++, todas las excepciones son esencialmente no verificadas en tiempo de compilación. El manejo de excepciones en C++ se realiza mediante try-catch en tiempo de ejecución, y no hay obligación del compilador de declararlas."
+      },
+      {
+        id: 37,
+        title: "Pregunta 37",
+        text: "Señala la o las respuestas correctas. ¿Qué tipo de vulnerabilidad se comete en este código?\n\npublic ResultSet execSQL(Connection conn, String sql) {\n  Statement stmt = null;\n  ResultSet rs = null;\n  try {\n    stmt = conn.createStatement();\n    rs = stmt.executeQuery(sql);\n  } catch (SQLException sqe) {\n    logger.log(Level.WARNING, \"error executing: \" + sql, sqe);\n  } finally {\n    close(stmt);\n  }\n  return rs;\n}",
+        options: {
+          A: "Integer overflows.",
+          B: "Desbordamiento de buffer.",
+          C: "Format string.",
+          D: "Manipulación de información privada."
+        },
+        correct: "D",
+        explanation:
+          "Si el método falla al ejecutar la consulta como está previsto (tal vez debido a que la base de datos no está disponible), el método registra la consulta en la excepción. Si la consulta contiene datos privados, los datos privados se registrarán."
+      },
+      {
+        id: 38,
+        title: "Pregunta 38",
+        text: "Señala la respuesta correcta. Se tienen dos opciones para crear archivos temporales de forma segura:",
+        options: {
+          A: "Generar los nombres de archivo temporales que sean difíciles de adivinar, usando un generador de números pseudo-aleatorios (PRNG) criptográficamente seguros para crear un elemento aleatorio en cada nombre del archivo temporal.",
+          B: "Almacenar los archivos temporales bajo un directorio que no es públicamente accesible, eliminando así toda la discusión con respecto a ataques.",
+          C: "Almacenar los archivos temporales bajo un directorio que es públicamente accesible, eliminando así toda la discusión con respecto a ataques.",
+          D: "Generar los nombres de archivo temporales que sean difíciles de adivinar usando un generador de números pseudo-aleatorios (PRNG) estadístico para crear un elemento en cada nombre del archivo temporal."
+        },
+        correct: "A",
+        explanation:
+          "Se tienen dos opciones para crear archivos temporales de forma segura: almacenar los archivos temporales bajo un directorio que no es públicamente accesible, eliminando así toda la discusión con respecto a ataques; generar los nombres de archivo temporales que sean difíciles de adivinar, usando un generador de números pseudo-aleatorios (PRNG) criptográficamente seguros para crear un elemento aleatorio en cada nombre del archivo temporal."
+      },
+      {
+        id: 39,
+        title: "Pregunta 39",
+        text: "Señala la respuesta correcta. Métodos para detectar y prevenir integrers overflows:",
+        options: {
+          A: "Usar tipos sin signo.",
+          B: "Verificar el rango, esperando malas suposiciones, restringir la entrada numérica del tipo de los usuarios, comprobar los valores usados acceder y reservar memoria, respetar los warnings del compilador, entender las reglas de conversión entre enteros en los compiladores, como GCC.",
+          C: "Restringir la entrada numérica de usuario.",
+          D: "Extender las reglas de conversión entre enteros."
+        },
+        correct: "B",
+        explanation:
+          "Métodos para detectar y prevenir integrers overflows: usar tipos sin signo, esperar malas suposiciones, restringir la entrada numérica del tipo de los usuarios, comprobar los valores usados acceder y reservar memoria, respetar los warnings del compilador, entender las reglas de conversión entre enteros en los compiladores, como GCC."
+      },
+      {
+        id: 40,
+        title: "Pregunta 40",
+        text: "Señala la respuesta incorrecta. Los ataques de escalada de privilegios pueden tener como objetivo cualquier variedad de vulnerabilidades de software, que son principalmente un riesgo en programas privilegiados.",
+        options: {
+          A: "Archivos de configuración que son condicionados de carrera acceso a archivos, permisos de archivo débiles, archivos temporales inseguros, inyección de comandos, mal uso de descriptores de archivo estándar.",
+          B: "Condiciones de carrera de acceso a archivos.",
+          C: "Inyección de comandos.",
+          D: "Mal uso de descriptores de archivo estándar."
+        },
+        correct: "A",
+        explanation:
+          "Los ataques de escalada de privilegios pueden tener como objetivo cualquier variedad de vulnerabilidades de software; en este apartado se tratan las clases de vulnerabilidades que son principalmente un riesgo on programas privilegiados condicionados de carrera acceso a archivos, permisos de archivo débiles, archivos temporales inseguros, inyección de comandos, mal uso de descriptores de archivo estándar."
+      },
+      {
+        id: 41,
+        title: "Pregunta 41",
+        text: "Señala la respuesta correcta. Revisando el programa ¿cuál de las siguientes preguntas describe mejor lo que está haciendo la función?\n\nvoid aFunction(char *buf) {\n  static char BANNED_CHARACTERS[] = {'>', '<', '!', '\"'};\n  int l = strlen(buf);\n  int i;\n  for(i = 0; i < l; i++) {\n    int j;\n    int k = sizeof(BANNED_CHARACTERS) / sizeof(char);\n    for(j = 0; j < k; j++) {\n      if(buf[i] == BANNED_CHARACTERS[j])\n        buf[i] = '-';\n    }\n  }\n}",
+        options: {
+          A: "Asegurar la no violabilidad espacial de la memoria.",
+          B: "Validar la entrada mediante lista blanca.",
+          C: "Asegurar la no violabilidad temporal de la memoria.",
+          D: "Validar la entrada mediante lista negra. Si una entrada está presente en la lista negra, entonces se elimina. Hay que asegurar la no violabilidad espacial de la memoria, validar la entrada mediante lista blanca, asegurar la no violabilidad temporal de la memoria, validar la entrada mediante lista negra."
+        },
+        correct: "D",
+        explanation:
+          "Si una entrada está presente en la lista negra, entonces se elimina. Hay que asegurar la no violabilidad espacial de la memoria, validar la entrada mediante lista blanca, asegurar la no violabilidad temporal de la memoria, validar la entrada mediante lista negra."
+      },
+      {
+        id: 42,
+        title: "Pregunta 42",
+        text: "Señala la incorrecta. Las funciones de strings limitadas son más seguras que las funciones ilimitadas, pero hay todavía mucho margen para el error. Los fallos de programación más comunes que se pueden cometer con las funciones de string limitadas:",
+        options: {
+          A: "El buffer de destino se desborda porque el límite depende del tamaño de los datos de la fuente, más bien que del tamaño del buffer de destino.",
+          B: "El buffer de destino se desborda porque su límite se especifica como el tamaño total del buffer, más bien que como el espacio restante.",
+          C: "El buffer de destino se deja sin un terminador nulo.",
+          D: "El programa escribe a una posición arbitraria en la memoria porque el buffer de destino no se termina con el carácter nulo y la función comienza a escribir en la posición del primer carácter nulo en el buffer de destino."
+        },
+        correct: "D",
+        explanation:
+          "El programa escribe a una posición arbitraria en la memoria porque el buffer de destino no se termina con el carácter nulo y la función comienza a escribir en la posición del primer carácter nulo en el buffer de destino."
+      },
+      {
+        id: 43,
+        title: "Pregunta 43",
+        text: "Señala la respuesta correcta. ¿Qué tipo de vulnerabilidad se comete en este código?\n\n#include <stdio.h>\n#include <stdlib.h>\n#include <unistd.h>\n\n#define MY_TMP_FILE \"/tmp/file.tmp\"\n\nint main(int argc, char* argv[])\n{\n  FILE *f;\n  if(!access(MY_TMP_FILE, F_OK)){\n    printf(\"File exists\\n\");\n    return EXIT_FAILURE;\n  }\n  tmpFile = fopen(MY_TMP_FILE, \"w\");\n  if(tmpFile == NULL){\n    return EXIT_FAILURE;\n  }\n  fputs(\"Some text..\\n\", tmpFile);\n  fclose(tmpFile);\n  return EXIT_SUCCESS;\n}",
+        options: {
+          A: "Integer overflows.",
+          B: "Desbordamiento de buffer.",
+          C: "Condiciones de carrera.",
+          D: "Use after free."
+        },
+        correct: "C",
+        explanation:
+          "Es una buena idea comprobar si un archivo existe o no antes de crearlo. Sin embargo, un usuario malicioso podría crear un archivo (o peor aun, un enlace simbólico a un archivo de sistema crítico) entre la comprobación y el momento en que realmente se utiliza el archivo."
+      },
+      {
+        id: 44,
+        title: "Pregunta 44",
+        text: "Señala la respuesta correcta. ¿Cuándo ocurre un ataque de integer overflow?",
+        options: {
+          A: "Al realizar una operación de una resta.",
+          B: "Un entero es usado como si fuera un puntero.",
+          C: "Un entero es usado para acceder a un buffer fuera de sus límites.",
+          D: "No hay más espacio en el programa para almacenar un entero."
+        },
+        correct: "C",
+        explanation:
+          "Un entero es usado para acceder a un buffer fuera de sus límites. Un integer overflow ocurre cuando el resultado de una operación aritmética no puede ser representado dentro del rango de almacenamiento del tipo de dato entero, lo que puede llevar a accesos fuera de los límites de un buffer."
+      }
+    ];
+
+    // --- Render de las preguntas ---
+    const quizContainer = document.getElementById("quiz");
+
+    questions.forEach((q) => {
+      const questionDiv = document.createElement("div");
+      questionDiv.className = "question";
+      questionDiv.dataset.questionId = q.id;
+
+      const titleEl = document.createElement("div");
+      titleEl.className = "question-title";
+      titleEl.textContent = q.title;
+
+      const textEl = document.createElement("div");
+      textEl.className = "question-text";
+      textEl.textContent = q.text;
+
+      const listEl = document.createElement("ul");
+      listEl.className = "options";
+
+      for (const [key, text] of Object.entries(q.options)) {
+        const li = document.createElement("li");
+        li.className = "option";
+
+        const id = `q${q.id}_${key}`;
+
+        const input = document.createElement("input");
+        input.type = "radio";
+        input.name = `q${q.id}`;
+        input.id = id;
+        input.value = key;
+        input.dataset.questionId = q.id;
+
+        const label = document.createElement("label");
+        label.htmlFor = id;
+        label.textContent = `${key}. ${text}`;
+
+        li.appendChild(input);
+        li.appendChild(label);
+        listEl.appendChild(li);
+      }
+
+      const feedback = document.createElement("div");
+      feedback.className = "feedback";
+      feedback.id = `feedback-q${q.id}`;
+
+      questionDiv.appendChild(titleEl);
+      questionDiv.appendChild(textEl);
+      questionDiv.appendChild(listEl);
+      questionDiv.appendChild(feedback);
+
+      quizContainer.appendChild(questionDiv);
+    });
+
+    // --- Gestión de respuestas ---
+    quizContainer.addEventListener("change", (event) => {
+      const target = event.target;
+      if (target.matches("input[type='radio']")) {
+        const questionId = Number(target.dataset.questionId);
+        const selected = target.value;
+
+        const question = questions.find((q) => q.id === questionId);
+        const feedback = document.getElementById(`feedback-q${questionId}`);
+
+        const isCorrect = selected === question.correct;
+
+        feedback.style.display = "block";
+        feedback.classList.toggle("correct", isCorrect);
+        feedback.classList.toggle("incorrect", !isCorrect);
+
+        if (isCorrect) {
+          feedback.innerHTML =
+            `<strong>✅ Correcto</strong>` +
+            `<span>${question.explanation}</span>`;
+        } else {
+          feedback.innerHTML =
+            `<strong>❌ Incorrecto</strong>` +
+            `<span>La respuesta correcta es <span class="correct-answer">${question.correct}</span>. ${question.explanation}</span>`;
+        }
+      }
+    });
+  </script>
+</body>
+</html>
