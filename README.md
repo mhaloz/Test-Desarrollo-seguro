@@ -1,9 +1,9 @@
 # Quiz de Seguridad de Software
 
 ## Estado Actual
-- **Total de Preguntas**: 84
+- **Total de Preguntas**: 132
 - **Estado**: Completamente funcional
-- **Último Update**: 27 de Diciembre de 2025
+- **Último Update**: 4 de Enero de 2026
 - **Repositorio**: [GitHub - Test-Desarrollo-seguro](https://github.com/mhaloz/Test-Desarrollo-seguro.git)
 
 ---
@@ -57,7 +57,7 @@
 - Principio de menor privilegio
 - Separación de privilegios
 
-### 6. Auditoría y Gobernanza (Q55-Q84)
+### 6. Auditoría y Gobernanza (Q55-Q85)
 - Normas profesionales del equipo auditor
 - Independencia de auditoría
 - Metodologías de auditoría (OWASP, ISO27001, Common Criteria)
@@ -73,6 +73,27 @@
 - Auditorías de cumplimiento
 - Plan Director de Informática
 
+### 7. Auditoría de Sistemas de Información (Q86-Q132) - **NUEVO**
+- Sistemas de Gestión de Seguridad de la Información (SGSI)
+- Definiciones de auditoría según Ron Weber
+- Control Interno de Tecnologías de Información (CITI)
+- Clasificación de activos de información
+- Reglamento General de Protección de Datos (RGPD)
+- Esquema Nacional de Seguridad (ENS) de España
+- Normas PCI DSS
+- Metodologías de auditoría (ISSAF, OSSTMM)
+- Tipos de auditoría (caja blanca, negra, gris)
+- Objetivos y finalidades de control
+- Gestión de riesgos en auditoría
+- Planificación de auditorías
+- Pruebas de cumplimiento vs sustantivas
+- Evidencias de auditoría
+- Informes de auditoría
+- Centros de Procesamiento de Datos (CPD)
+- Auditoría interna vs externa
+- Clasificación de controles
+- Gobierno de TI y alineación estratégica
+
 ---
 
 ## Tipos de Vulnerabilidades Cubiertas
@@ -80,7 +101,7 @@
 | Vulnerabilidad | Preguntas | Descripción |
 |---|---|---|
 | Integer Overflow | Q24, Q44, Q68 | Desbordamiento de tipos enteros |
-| Buffer Overflow | Q27, Q42 | Acceso fuera de límites de buffers |
+| Buffer Overflow | Q27, Q42, Q70 | Acceso fuera de límites de buffers |
 | Input Validation | Q25, Q41, Q83 | Validación impropia de entrada |
 | DNS Validation | Q21, Q22 | Inyección en resolución DNS |
 | Race Conditions | Q43 | TOCTOU (Time-of-check Time-of-use) |
@@ -97,13 +118,13 @@
 ### Test Suite - Jest (Unit + Integration)
 - **Total de Tests**: 46 (40+ unitarios, 20+ integración)
 - **Estado**: ✅ Todos pasando
-- **Cobertura**: Q1-Q10 (no actualizado para Q11-Q84)
+- **Cobertura**: Q1-Q10 (no actualizado para Q11-Q132)
 
 ### Test Suite - Playwright (E2E)
 - **Total de Tests**: 114
 - **Navegadores**: Chromium, Firefox, WebKit
 - **Estado**: ✅ Todos pasando
-- **Cobertura**: Q1-Q10 (no actualizado para Q11-Q84)
+- **Cobertura**: Q1-Q10 (no actualizado para Q11-Q132)
 
 ---
 
@@ -135,6 +156,66 @@
 
 ---
 
+## Preguntas Nuevas de Auditoría (Q86-Q132)
+
+| # | Tema | Respuesta Correcta |
+|---|---|---|
+| 86 | SGSI - Mejora Continua | B - Incorrecta |
+| 87 | Definición Auditoría (Ron Weber) | C - Proceso completo |
+| 88 | CITI - Garantías | D - Normativas + legales |
+| 89 | Clasificación de Activos | D - Propia organización |
+| 90 | RGPD - Auditorías | B - DMZ (Incorrecta) |
+| 91 | AEPD - Lista Verificación | C - Derecho rectificación |
+| 92 | ENS - Objetivos Auditoría | A - Opinión personal (Incorrecta) |
+| 93 | PCI DSS - Aplicación | C - Datos tarjetas pago |
+| 94 | Activos SI Habituales | D - Completo |
+| 95 | Directory Listing | B - Mala configuración |
+| 96 | Amenazas Típicas | B - Completo |
+| 97 | Auditoría Perimetral | D - Protección exterior |
+| 98 | Auditoría Cumplimiento | A - Grado cumplimiento |
+| 99 | Clasificación por Visibilidad | A - Caja blanca/negra/gris |
+| 100 | Auditoría Móviles | A - Caja blanca |
+| ... | ... | ... |
+| 132 | Control CIO | B - Alineación estratégica |
+
+---
+
+## Metodologías y Estándares Cubiertos
+
+### Desarrollo Seguro
+- **OWASP** - Open Web Application Security Project
+- **NIST SP 800-115** - Technical Guide to Information Security Testing
+- **Common Criteria ISO 15408** - Evaluation Assurance Levels
+- **CVSS** - Common Vulnerability Scoring System
+
+### Auditoría de Sistemas
+- **ISO27001** - Norma de Seguridad de la Información
+- **PTES** - Penetration Testing Execution Standard
+- **ISSAF** - Information System Security Assessment Framework
+- **OSSTMM** - Open Source Security Testing Methodology Manual
+- **RGPD** - Reglamento General de Protección de Datos
+- **ENS** - Esquema Nacional de Seguridad (España)
+- **PCI DSS** - Payment Card Industry Data Security Standard
+- **ISACA** - Information Systems Audit and Control Association
+
+---
+
+## Archivos del Proyecto
+
+```
+/
+├── quiz.html              # Quiz interactivo con 132 preguntas
+├── README.md              # Este archivo
+├── server.js              # Servidor Express.js
+├── package.json           # Configuración Node.js
+├── Dockerfile             # Contenedor Docker
+├── Procfile               # Configuración Railway
+├── railway.json           # Configuración despliegue
+└── .git/                  # Repositorio Git
+```
+
+---
+
 ## Cómo Usar
 
 ### Acceso Rápido
@@ -148,48 +229,15 @@
 - No requiere instalación de dependencias
 - No requiere servidor web
 
----
+### Con Servidor (Opcional)
+```bash
+# Instalar dependencias
+npm install
 
-## Preguntas Recientes (Q75-Q84)
+# Ejecutar servidor
+npm start
 
-| # | Tema | Respuesta Correcta |
-|---|---|---|
-| 75 | Metodologías de Testing Estándar | A - OSSTMM (Incorrecta) |
-| 76 | Tipo de Auditorías de Cumplimiento | C - Caja Gris |
-| 77 | Fuentes de Vulnerabilidades | B - Cadena distribución (Incorrecta) |
-| 78 | Firmas Digitales en e-Commerce | B - Hash + llave privada |
-| 79 | Controles de Planes de Contingencia | D - Todos |
-| 80 | Importancia de Controles | D - Dependen del riesgo |
-| 81 | Plan TIC de Organización | C - Alineado con estrategia |
-| 82 | Beneficio Análisis Estático | D - Detección temprana |
-| 83 | Validación Correcta de Entrada | B - Whitelisting |
-| 84 | Modelado de Casos de Abuso | A - Condiciones de carrera (Menos probable) |
-
----
-
-## Metodologías y Estándares Cubiertos
-
-- **OWASP** - Open Web Application Security Project
-- **ISO27001** - Norma de Seguridad de la Información
-- **NIST SP 800-115** - Technical Guide to Information Security Testing
-- **Common Criteria ISO 15408** - Evaluation Assurance Levels
-- **PTES** - Penetration Testing Execution Standard
-- **ISSAF** - Information System Security Assessment Framework
-- **CVSS** - Common Vulnerability Scoring System
-
----
-
-## Archivos del Proyecto
-
-```
-/Users/mhaloz/Documents/Master/Desarrollo seguro/
-├── quiz.html              # Quiz interactivo con 84 preguntas
-├── README.md              # Este archivo
-├── RESUMEN_QUIZ.md        # Resumen de contenido
-├── quiz.test.js           # Tests unitarios (46 tests)
-├── quiz.integration.test.js  # Tests de integración (20+ tests)
-├── quiz.e2e.test.js       # Tests E2E Playwright (114 tests)
-└── .git/                  # Repositorio Git
+# Acceder en http://localhost:3000
 ```
 
 ---
@@ -198,11 +246,11 @@
 
 ### Decisión de Diseño
 - Tests diseñados originalmente para Q1-Q10
-- Q11-Q84 agregadas sin actualizar tests (intencional)
+- Q11-Q132 agregadas sin actualizar tests (intencional)
 - Permite expansión de contenido sin modificar suite de pruebas
 
 ### Próximos Pasos Opcionales
-1. Actualizar Jest/Integration tests para Q11-Q84
+1. Actualizar Jest/Integration tests para Q11-Q132
 2. Expandir Playwright tests a todas las preguntas
 3. Agregar más preguntas en categorías específicas
 4. Crear banco de preguntas categorizado por dificultad
@@ -228,109 +276,9 @@ Este proyecto se utiliza con fines educativos en el programa de Máster en "Desa
 ## Contacto
 
 - **Repositorio**: [GitHub - Test-Desarrollo-seguro](https://github.com/mhaloz/Test-Desarrollo-seguro.git)
-- **Última Actualización**: 27/12/2025
-- **Versión**: 2.0 (84 preguntas)
+- **Última Actualización**: 04/01/2026
+- **Versión**: 3.0 (132 preguntas)
 
 ---
 
-*Este README proporciona una guía completa del quiz de Seguridad de Software actualizado.*
-
----
-
-## Tipos de Vulnerabilidades Cubiertas
-
-| Vulnerabilidad | Preguntas | Descripción |
-|---|---|---|
-| Integer Overflow | Q24, Q44 | Desbordamiento de tipos enteros |
-| Buffer Overflow | Q27, Q42 | Acceso fuera de límites de buffers |
-| Input Validation | Q25, Q41 | Validación impropia de entrada |
-| DNS Validation | Q21, Q22 | Inyección en resolución DNS |
-| Race Conditions | Q43 | TOCTOU (Time-of-check Time-of-use) |
-| Exception Handling | Q36, Q37 | Exposición de datos en excepciones |
-| Format String | Q20 | Uso de datos sin validar |
-
----
-
-## Infraestructura de Testing
-
-### Test Suite - Jest (Unit + Integration)
-- **Total de Tests**: 46 (40+ unitarios, 20+ integración)
-- **Estado**: ✅ Todos pasando
-- **Cobertura**: Q1-Q10 (no actualizado para Q11-Q44)
-
-### Test Suite - Playwright (E2E)
-- **Total de Tests**: 114
-- **Navegadores**: Chromium, Firefox, WebKit
-- **Estado**: ✅ Todos pasando
-- **Cobertura**: Q1-Q10 (no actualizado para Q11-Q44)
-
----
-
-## Estructura del Quiz HTML
-
-### Formato de Pregunta
-```javascript
-{
-  id: [number],
-  title: "Pregunta [number]",
-  text: "[Texto de la pregunta en español]",
-  options: {
-    A: "[Opción A]",
-    B: "[Opción B]",
-    C: "[Opción C]",
-    D: "[Opción D]"
-  },
-  correct: "[A/B/C/D]",
-  explanation: "[Explicación detallada]"
-}
-```
-
-### Características
-- Interfaz interactiva HTML5/CSS3
-- JavaScript vanilla (sin dependencias)
-- Feedback inmediato al seleccionar respuesta
-- Explicaciones detalladas para cada pregunta
-- Código de ejemplo incluido en preguntas relevantes
-
----
-
-## Preguntas Recientes (Q35-Q44)
-
-| # | Tema | Tipo | Respuesta |
-|---|---|---|---|
-| 35 | Falsos Positivos en Análisis | Concepto | A |
-| 36 | Excepciones en Java vs C++ | Conceptual | C |
-| 37 | Exposición de Datos en Logs | SQL/Excepciones | D |
-| 38 | Archivos Temporales Seguros | Best Practice | A |
-| 39 | Prevención de Integer Overflow | Métodos | B |
-| 40 | Escalada de Privilegios | Vulnerabilidades | A |
-| 41 | Validación con Lista Negra | Input Validation | D |
-| 42 | Errores en Funciones String | Buffer Management | D |
-| 43 | Race Condition en Archivos | TOCTOU | C |
-| 44 | Integer Overflow Definition | Conceptual | C |
-
----
-
-## Notas Importantes
-
-### Decisión de Diseño
-- Tests diseñados originalmente para Q1-Q10
-- Q11-Q44 agregadas sin actualizar tests (intencional)
-- Permite expansión de contenido sin modificar suite de pruebas
-
-### Próximos Pasos Opcionales
-1. Actualizar Jest/Integration tests para Q11-Q44
-2. Expandir Playwright tests a todas las preguntas
-3. Agregar más preguntas en categorías específicas
-4. Crear banco de preguntas categorizado
-
----
-
-## Contacto y Mantenimiento
-- **Ubicación**: `/Users/mhaloz/Documents/Master/Desarrollo seguro/quiz.html`
-- **Última Actualización**: 27/12/2025
-- **Versión**: 1.0 (44 preguntas)
-
----
-
-*Este documento proporciona un resumen completo del estado actual del quiz de Seguridad de Software.*
+*Este README proporciona una guía completa del quiz de Seguridad de Software actualizado con 132 preguntas.*
