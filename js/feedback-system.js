@@ -3,13 +3,12 @@
  * Provides educational feedback and answer validation
  */
 
-class FeedbackSystem extends IFeedbackSystem {
+class FeedbackSystem {
     /**
      * Initialize the feedback system
      * @param {HTMLElement|string} feedbackContainer - Feedback container element or ID
      */
     constructor(feedbackContainer) {
-        super();
         
         if (typeof feedbackContainer === 'string') {
             this.container = document.getElementById(feedbackContainer);
@@ -53,7 +52,16 @@ class FeedbackSystem extends IFeedbackSystem {
         let feedbackType;
         let message;
         
-        if (intersection.length === correctArray.length && extraLines.length === 0) {
+        // Handle case where there are no vulnerabilities (secure code)
+        if (correctArray.length === 0) {
+            if (userArray.length === 0) {
+                feedbackType = 'success';
+                message = '¡Correcto! Este código no contiene vulnerabilidades evidentes.';
+            } else {
+                feedbackType = 'error';
+                message = `Incorrecto. Este código es seguro, pero seleccionaste ${userArray.length} línea${userArray.length !== 1 ? 's' : ''}.`;
+            }
+        } else if (intersection.length === correctArray.length && extraLines.length === 0) {
             // Perfect match
             feedbackType = 'success';
             message = '¡Excelente! Has identificado correctamente todas las vulnerabilidades.';

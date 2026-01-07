@@ -3,13 +3,12 @@
  * Manages question loading, navigation, and filtering
  */
 
-class QuestionManager extends IQuestionManager {
+class QuestionManager {
     /**
      * Initialize the question manager
      * @param {Question[]} questions - Array of questions
      */
     constructor(questions = []) {
-        super();
         
         this.allQuestions = [];
         this.filteredQuestions = [];
@@ -242,7 +241,8 @@ class QuestionManager extends IQuestionManager {
         
         // Array validations
         if (!Array.isArray(question.vulnerableLines)) return false;
-        if (question.vulnerableLines.length === 0) return false;
+        // Allow empty arrays for questions with no vulnerabilities (secure code examples)
+        // if (question.vulnerableLines.length === 0) return false;
         
         // Explanation validation
         if (!question.explanation || typeof question.explanation !== 'object') return false;
@@ -251,7 +251,7 @@ class QuestionManager extends IQuestionManager {
             if (typeof question.explanation[field] !== 'string') return false;
         }
         
-        // Validate vulnerable lines are within code bounds
+        // Validate vulnerable lines are within code bounds (only if there are vulnerable lines)
         const codeLines = question.code.split('\n').length;
         for (const lineNum of question.vulnerableLines) {
             if (typeof lineNum !== 'number' || lineNum < 1 || lineNum > codeLines) {
@@ -261,7 +261,7 @@ class QuestionManager extends IQuestionManager {
         }
         
         // Validate supported language
-        const supportedLanguages = ['c', 'cpp', 'java', 'javascript', 'python', 'php', 'sql'];
+        const supportedLanguages = ['c', 'cpp', 'java', 'javascript', 'python', 'php', 'sql', 'csharp'];
         if (!supportedLanguages.includes(question.language.toLowerCase())) {
             console.warn(`Unsupported language: ${question.language}`);
             return false;

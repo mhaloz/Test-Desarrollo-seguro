@@ -3,14 +3,13 @@
  * Handles rendering of source code with syntax highlighting and line numbering
  */
 
-class CodeRenderer extends ICodeRenderer {
+class CodeRenderer {
     /**
      * Initialize the code renderer
      * @param {string} containerId - ID of the container element
      * @param {Object} options - Configuration options
      */
     constructor(containerId, options = {}) {
-        super();
         this.container = document.getElementById(containerId);
         if (!this.container) {
             throw new Error(`Container element with ID '${containerId}' not found`);
@@ -34,7 +33,9 @@ class CodeRenderer extends ICodeRenderer {
             'python': 'python',
             'py': 'python',
             'php': 'php',
-            'sql': 'sql'
+            'sql': 'sql',
+            'csharp': 'csharp',
+            'c#': 'csharp'
         };
         
         this.currentCode = '';

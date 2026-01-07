@@ -3,13 +3,12 @@
  * Handles interactive line selection in code blocks
  */
 
-class SelectionManager extends ISelectionManager {
+class SelectionManager {
     /**
      * Initialize the selection manager
      * @param {HTMLElement|string} codeContainer - Code container element or ID
      */
     constructor(codeContainer) {
-        super();
         
         if (typeof codeContainer === 'string') {
             this.container = document.getElementById(codeContainer);
@@ -42,7 +41,8 @@ class SelectionManager extends ISelectionManager {
      * Enable line selection functionality
      */
     enableSelection() {
-        if (this.isEnabled) return;
+        // Always disable first to clean up any existing state
+        this.disableSelection();
         
         this.isEnabled = true;
         this.isAnswered = false;
@@ -50,6 +50,7 @@ class SelectionManager extends ISelectionManager {
         
         // Add event listeners to all code lines
         const codeLines = this.container.querySelectorAll('.code-line');
+        
         codeLines.forEach(line => {
             line.addEventListener('click', this.clickHandler);
             line.addEventListener('keydown', this.keyHandler);
@@ -300,10 +301,10 @@ class SelectionManager extends ISelectionManager {
         this.clearFeedbackHighlights();
         this.isAnswered = false;
         
-        // Remove answered state
+        // Remove answered state from all lines
         const codeLines = this.container.querySelectorAll('.code-line');
         codeLines.forEach(line => {
-            line.classList.remove('answered');
+            line.classList.remove('answered', 'selected', 'correct', 'incorrect');
         });
     }
 
