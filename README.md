@@ -1,14 +1,70 @@
-# Quiz de Seguridad de Software
+# Plataforma Educativa de Seguridad de Software
 
 ## Estado Actual
-- **Total de Preguntas**: 132
+- **Quiz Teórico**: 132 preguntas de opción múltiple
+- **Analizador de Código**: 13 ejercicios interactivos de análisis de vulnerabilidades
 - **Estado**: Completamente funcional
-- **Último Update**: 4 de Enero de 2026
+- **Último Update**: 6 de Enero de 2026
 - **Repositorio**: [GitHub - Test-Desarrollo-seguro](https://github.com/mhaloz/Test-Desarrollo-seguro.git)
+
+## 🎯 Herramientas Educativas
+
+### 📝 [Quiz de Seguridad de Software](quiz.html)
+Quiz interactivo con **132 preguntas** de opción múltiple sobre ciberseguridad, desarrollo seguro y auditoría de sistemas de información.
+
+### 🔍 [Analizador de Vulnerabilidades de Código](vulnerability-analyzer.html) - **NUEVO**
+Herramienta interactiva para **análisis práctico de código** con 13 ejercicios donde los usuarios identifican líneas vulnerables en código real. Incluye explicaciones detalladas y código seguro alternativo.
 
 ---
 
-## Distribución de Preguntas por Tema
+## 🔍 Analizador de Vulnerabilidades de Código - Características
+
+### Funcionalidades Principales
+- **Visualización de código** con sintaxis resaltada (highlight.js)
+- **Selección interactiva** de líneas vulnerables
+- **Retroalimentación educativa** detallada
+- **13 ejercicios prácticos** con código real
+- **Soporte multi-lenguaje**: C, C++, Java, JavaScript, Python, PHP, SQL, C#
+- **Navegación entre preguntas** con filtros
+- **Estadísticas de progreso** del usuario
+
+### Arquitectura del Analizador
+- **Componentes modulares**: CodeRenderer, SelectionManager, FeedbackSystem, QuestionManager
+- **Tecnologías**: HTML5, CSS3, JavaScript ES6+, highlight.js
+- **Seguridad**: Content Security Policy (CSP), escape de HTML
+- **Accesibilidad**: WCAG 2.1 AA, navegación por teclado, ARIA labels
+- **Responsive**: Diseño adaptable para dispositivos móviles
+
+### Tipos de Vulnerabilidades en el Analizador
+| Tipo | Preguntas | Lenguajes | Dificultad |
+|------|-----------|-----------|------------|
+| **Buffer Overflow** | 2 | C, C++ | Intermedio-Avanzado |
+| **SQL Injection** | 2 | PHP, C# | Básico-Intermedio |
+| **Cross-Site Scripting (XSS)** | 1 | JavaScript | Básico |
+| **Input Validation** | 2 | Java, C | Intermedio |
+| **DNS Validation** | 1 | C | Avanzado |
+| **Path Validation** | 1 | Java | Básico |
+| **Integer Overflow** | 1 | C | Avanzado |
+| **Information Disclosure** | 1 | Java | Intermedio |
+| **Race Conditions** | 1 | C | Avanzado |
+| **Use After Free** | 1 | C | Avanzado |
+| **Off by One** | 1 | C | Intermedio |
+
+### Arquitectura del Analizador
+- **Componentes modulares**: CodeRenderer, SelectionManager, FeedbackSystem, QuestionManager
+- **Tecnologías**: HTML5, CSS3, JavaScript ES6+, highlight.js
+- **Seguridad**: Content Security Policy (CSP), escape de HTML
+- **Accesibilidad**: WCAG 2.1 AA, navegación por teclado, ARIA labels
+- **Responsive**: Diseño adaptable para dispositivos móviles
+
+### Integración con Quiz
+- **Navegación cruzada** entre herramientas
+- **Estilos compartidos** y diseño consistente
+- **Datos complementarios** de progreso del usuario
+
+---
+
+## 📝 Quiz Teórico - Distribución de Preguntas por Tema
 
 ### 1. Fundamentos de Seguridad (Q1-Q10)
 - Fuentes de vulnerabilidades
@@ -96,7 +152,7 @@
 
 ---
 
-## Tipos de Vulnerabilidades Cubiertas
+## 🛡️ Tipos de Vulnerabilidades Cubiertas en el Quiz Teórico
 
 | Vulnerabilidad | Preguntas | Descripción |
 |---|---|---|
@@ -111,20 +167,51 @@
 | SQL Injection | Q69 | Inyección SQL (y defensa) |
 | Off by One | Q68 | Error de límite de bucle |
 
----
-
-## Infraestructura de Testing
+## 🧪 Testing y Calidad
 
 ### Test Suite - Jest (Unit + Integration)
 - **Total de Tests**: 46 (40+ unitarios, 20+ integración)
 - **Estado**: ✅ Todos pasando
-- **Cobertura**: Q1-Q10 (no actualizado para Q11-Q132)
+- **Cobertura**: Q1-Q10 del quiz (no actualizado para Q11-Q132)
 
 ### Test Suite - Playwright (E2E)
 - **Total de Tests**: 114
 - **Navegadores**: Chromium, Firefox, WebKit
 - **Estado**: ✅ Todos pasando
-- **Cobertura**: Q1-Q10 (no actualizado para Q11-Q132)
+- **Cobertura**: Q1-Q10 del quiz (no actualizado para Q11-Q132)
+
+### Tests del Analizador de Vulnerabilidades
+- **Tests básicos**: Validación de HTML escape, estructura de preguntas
+- **Estado**: ✅ Funcional
+- **Archivo**: [test-vulnerability-analyzer.html](test-vulnerability-analyzer.html)
+
+### Decisiones de Diseño
+- Tests originales diseñados para Q1-Q10 del quiz
+- Q11-Q132 agregadas sin actualizar tests (intencional)
+- Analizador de vulnerabilidades con tests básicos incluidos
+- Permite expansión de contenido sin modificar suite de pruebas existente
+
+---
+
+## 🔮 Roadmap y Mejoras Futuras
+
+### Corto Plazo
+- [ ] Actualizar Jest/Integration tests para Q11-Q132
+- [ ] Expandir tests del analizador de vulnerabilidades
+- [ ] Agregar más ejercicios de código al analizador
+- [ ] Implementar persistencia de progreso del usuario
+
+### Mediano Plazo
+- [ ] Editor de código en vivo para corrección
+- [ ] Gamificación con puntos y logros
+- [ ] Modo examen con tiempo limitado
+- [ ] Análisis de patrones de errores comunes
+
+### Largo Plazo
+- [ ] IA para generación automática de preguntas
+- [ ] Integración con IDEs como extensión
+- [ ] API pública para integración externa
+- [ ] Colaboración multi-usuario para equipos
 
 ---
 
@@ -200,34 +287,50 @@
 
 ---
 
-## Archivos del Proyecto
+## 🏗️ Estructura del Proyecto
 
 ```
 /
-├── quiz.html              # Quiz interactivo con 132 preguntas
-├── README.md              # Este archivo
-├── server.js              # Servidor Express.js
-├── package.json           # Configuración Node.js
-├── Dockerfile             # Contenedor Docker
-├── Procfile               # Configuración Railway
-├── railway.json           # Configuración despliegue
-└── .git/                  # Repositorio Git
+├── quiz.html                         # Quiz interactivo (132 preguntas)
+├── vulnerability-analyzer.html       # Analizador de código (13 ejercicios) - NUEVO
+├── js/                              # Módulos JavaScript del analizador - NUEVO
+│   ├── app.js                       # Controlador principal
+│   ├── code-renderer.js             # Renderizado de código con sintaxis
+│   ├── selection-manager.js         # Gestión de selección de líneas
+│   ├── feedback-system.js           # Sistema de retroalimentación
+│   ├── question-manager.js          # Gestión de preguntas
+│   └── interfaces.js                # Interfaces y tipos de datos
+├── README.md                        # Este archivo
+├── VULNERABILITY-ANALYZER-README.md  # Documentación del analizador - NUEVO
+├── test-vulnerability-analyzer.html  # Tests del analizador - NUEVO
+├── server.js                        # Servidor Express.js
+├── package.json                     # Configuración Node.js
+├── Dockerfile                       # Contenedor Docker
+├── Procfile                         # Configuración Railway
+├── railway.json                     # Configuración despliegue
+└── .kiro/                          # Especificaciones y steering - NUEVO
+    └── specs/vulnerability-code-analyzer/
+        ├── requirements.md          # Requisitos del analizador
+        ├── design.md               # Diseño arquitectónico
+        └── tasks.md                # Plan de implementación
 ```
 
 ---
 
-## Cómo Usar
+## 🚀 Cómo Usar
 
-### Acceso Rápido
-1. **Descarga** o clona el repositorio
-2. **Abre** el archivo `quiz.html` en tu navegador web
-3. **Selecciona** una respuesta para cada pregunta
-4. **Revisa** la explicación de la respuesta correcta
+### 📝 Quiz Teórico
+1. **Abre** [quiz.html](quiz.html) en tu navegador
+2. **Selecciona** una respuesta para cada pregunta
+3. **Revisa** la explicación de la respuesta correcta
+4. **Progresa** a través de las 132 preguntas
 
-### Requisitos
-- Navegador web moderno (Chrome, Firefox, Safari, Edge)
-- No requiere instalación de dependencias
-- No requiere servidor web
+### 🔍 Analizador de Vulnerabilidades
+1. **Abre** [vulnerability-analyzer.html](vulnerability-analyzer.html) en tu navegador
+2. **Analiza** el código mostrado con sintaxis resaltada
+3. **Selecciona** las líneas que contienen vulnerabilidades
+4. **Verifica** tu respuesta para obtener retroalimentación detallada
+5. **Aprende** de las explicaciones y código seguro alternativo
 
 ### Con Servidor (Opcional)
 ```bash
@@ -238,28 +341,54 @@ npm install
 npm start
 
 # Acceder en http://localhost:3000
+# Quiz: http://localhost:3000/quiz.html
+# Analizador: http://localhost:3000/vulnerability-analyzer.html
 ```
 
----
-
-## Notas Importantes
-
-### Decisión de Diseño
-- Tests diseñados originalmente para Q1-Q10
-- Q11-Q132 agregadas sin actualizar tests (intencional)
-- Permite expansión de contenido sin modificar suite de pruebas
-
-### Próximos Pasos Opcionales
-1. Actualizar Jest/Integration tests para Q11-Q132
-2. Expandir Playwright tests a todas las preguntas
-3. Agregar más preguntas en categorías específicas
-4. Crear banco de preguntas categorizado por dificultad
+### Requisitos
+- Navegador web moderno (Chrome, Firefox, Safari, Edge)
+- No requiere instalación de dependencias
+- No requiere servidor web (funciona con archivos locales)
 
 ---
 
-## Contribuciones
+## 📚 Valor Educativo
 
-Para agregar más preguntas o mejorar el contenido:
+### Enfoque Complementario
+- **Quiz Teórico**: Conocimiento conceptual y normativo
+- **Analizador Práctico**: Habilidades de análisis de código real
+- **Cobertura Integral**: Desde fundamentos hasta auditoría avanzada
+
+### Público Objetivo
+- **Estudiantes de Máster**: Desarrollo Seguro
+- **Profesionales**: Actualización en ciberseguridad
+- **Desarrolladores**: Aprendizaje de buenas prácticas de codificación segura
+- **Auditores**: Conocimientos de auditoría de sistemas de información
+
+### Metodología de Aprendizaje
+- **Interactividad**: Aprendizaje activo vs. pasivo
+- **Casos reales**: Ejemplos de código con vulnerabilidades reales
+- **Explicaciones detalladas**: Contexto, explotación y mitigación
+- **Progresión gradual**: Diferentes niveles de dificultad
+
+---
+
+## 🤝 Contribuciones
+
+Para agregar más preguntas, ejercicios o mejorar el contenido:
+
+### Quiz Teórico
+1. Editar el array `questions` en [quiz.html](quiz.html)
+2. Seguir el formato de pregunta establecido
+3. Incluir explicación detallada
+
+### Analizador de Vulnerabilidades
+1. Editar el método `createSampleQuestions()` en [js/app.js](js/app.js)
+2. Seguir la estructura de ejercicio establecida
+3. Incluir código vulnerable, líneas correctas y explicaciones
+4. Ver [VULNERABILITY-ANALYZER-README.md](VULNERABILITY-ANALYZER-README.md) para detalles
+
+### Proceso de Contribución
 1. Fork el repositorio
 2. Crea una rama para tus cambios
 3. Commit y push tus cambios
@@ -273,12 +402,14 @@ Este proyecto se utiliza con fines educativos en el programa de Máster en "Desa
 
 ---
 
-## Contacto
+## 📞 Contacto y Recursos
 
 - **Repositorio**: [GitHub - Test-Desarrollo-seguro](https://github.com/mhaloz/Test-Desarrollo-seguro.git)
-- **Última Actualización**: 04/01/2026
-- **Versión**: 3.0 (132 preguntas)
+- **Documentación Analizador**: [VULNERABILITY-ANALYZER-README.md](VULNERABILITY-ANALYZER-README.md)
+- **Especificaciones Técnicas**: [.kiro/specs/vulnerability-code-analyzer/](.kiro/specs/vulnerability-code-analyzer/)
+- **Última Actualización**: 06/01/2026
+- **Versión**: 4.0 (Quiz: 132 preguntas + Analizador: 13 ejercicios)
 
 ---
 
-*Este README proporciona una guía completa del quiz de Seguridad de Software actualizado con 132 preguntas.*
+*Esta plataforma educativa proporciona una experiencia completa de aprendizaje en seguridad de software, combinando conocimiento teórico con análisis práctico de código.*
