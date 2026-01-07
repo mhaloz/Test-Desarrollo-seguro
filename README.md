@@ -1,7 +1,7 @@
 # Plataforma Educativa de Seguridad de Software
 
 ## Estado Actual
-- **Quiz Teórico**: 132 preguntas de opción múltiple
+- **Quiz Teórico**: 219 preguntas de opción múltiple
 - **Analizador de Código**: 13 ejercicios interactivos de análisis de vulnerabilidades
 - **Estado**: Completamente funcional
 - **Último Update**: 6 de Enero de 2026
@@ -10,7 +10,7 @@
 ## 🎯 Herramientas Educativas
 
 ### 📝 [Quiz de Seguridad de Software](quiz.html)
-Quiz interactivo con **132 preguntas** de opción múltiple sobre ciberseguridad, desarrollo seguro y auditoría de sistemas de información.
+Quiz interactivo con **219 preguntas** de opción múltiple sobre ciberseguridad, desarrollo seguro y auditoría de sistemas de información.
 
 ### 🔍 [Analizador de Vulnerabilidades de Código](vulnerability-analyzer.html) - **NUEVO**
 Herramienta interactiva para **análisis práctico de código** con 13 ejercicios donde los usuarios identifican líneas vulnerables en código real. Incluye explicaciones detalladas y código seguro alternativo.
@@ -291,7 +291,7 @@ Herramienta interactiva para **análisis práctico de código** con 13 ejercicio
 
 ```
 /
-├── quiz.html                         # Quiz interactivo (132 preguntas)
+├── quiz.html                         # Quiz interactivo (219 preguntas)
 ├── vulnerability-analyzer.html       # Analizador de código (13 ejercicios) - NUEVO
 ├── js/                              # Módulos JavaScript del analizador - NUEVO
 │   ├── app.js                       # Controlador principal
@@ -323,7 +323,7 @@ Herramienta interactiva para **análisis práctico de código** con 13 ejercicio
 1. **Abre** [quiz.html](quiz.html) en tu navegador
 2. **Selecciona** una respuesta para cada pregunta
 3. **Revisa** la explicación de la respuesta correcta
-4. **Progresa** a través de las 132 preguntas
+4. **Progresa** a través de las 219 preguntas
 
 ### 🔍 Analizador de Vulnerabilidades
 1. **Abre** [vulnerability-analyzer.html](vulnerability-analyzer.html) en tu navegador
@@ -408,7 +408,7 @@ Este proyecto se utiliza con fines educativos en el programa de Máster en "Desa
 - **Documentación Analizador**: [VULNERABILITY-ANALYZER-README.md](VULNERABILITY-ANALYZER-README.md)
 - **Especificaciones Técnicas**: [.kiro/specs/vulnerability-code-analyzer/](.kiro/specs/vulnerability-code-analyzer/)
 - **Última Actualización**: 06/01/2026
-- **Versión**: 4.0 (Quiz: 132 preguntas + Analizador: 13 ejercicios)
+- **Versión**: 4.0 (Quiz: 219 preguntas + Analizador: 13 ejercicios)
 
 ---
 
