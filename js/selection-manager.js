@@ -3,13 +3,12 @@
  * Handles interactive line selection in code blocks
  */
 
-class SelectionManager extends ISelectionManager {
+class SelectionManager {
     /**
      * Initialize the selection manager
      * @param {HTMLElement|string} codeContainer - Code container element or ID
      */
     constructor(codeContainer) {
-        super();
         
         if (typeof codeContainer === 'string') {
             this.container = document.getElementById(codeContainer);

@@ -3,13 +3,12 @@
  * Provides educational feedback and answer validation
  */
 
-class FeedbackSystem extends IFeedbackSystem {
+class FeedbackSystem {
     /**
      * Initialize the feedback system
      * @param {HTMLElement|string} feedbackContainer - Feedback container element or ID
      */
     constructor(feedbackContainer) {
-        super();
         
         if (typeof feedbackContainer === 'string') {
             this.container = document.getElementById(feedbackContainer);

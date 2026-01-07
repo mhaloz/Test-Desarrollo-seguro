@@ -3,13 +3,12 @@
  * Manages question loading, navigation, and filtering
  */
 
-class QuestionManager extends IQuestionManager {
+class QuestionManager {
     /**
      * Initialize the question manager
      * @param {Question[]} questions - Array of questions
      */
     constructor(questions = []) {
-        super();
         
         this.allQuestions = [];
         this.filteredQuestions = [];
