@@ -34,7 +34,9 @@ class CodeRenderer extends ICodeRenderer {
             'python': 'python',
             'py': 'python',
             'php': 'php',
-            'sql': 'sql'
+            'sql': 'sql',
+            'csharp': 'csharp',
+            'c#': 'csharp'
         };
         
         this.currentCode = '';

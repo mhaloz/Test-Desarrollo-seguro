@@ -261,7 +261,7 @@ class QuestionManager extends IQuestionManager {
         }
         
         // Validate supported language
-        const supportedLanguages = ['c', 'cpp', 'java', 'javascript', 'python', 'php', 'sql'];
+        const supportedLanguages = ['c', 'cpp', 'java', 'javascript', 'python', 'php', 'sql', 'csharp'];
         if (!supportedLanguages.includes(question.language.toLowerCase())) {
             console.warn(`Unsupported language: ${question.language}`);
             return false;
