@@ -24,11 +24,17 @@ class VulnerabilityAnalyzerApp {
             categoryProgress: new Map()
         };
         
+        // Question answers storage - stores detailed answers for each question
+        this.questionAnswers = new Map(); // questionId -> { selectedLines, validationResult, timestamp }
+        
         // DOM elements
         this.elements = {};
         
         // Sample questions for demonstration
         this.sampleQuestions = this.createSampleQuestions();
+        
+        // Load saved progress from localStorage
+        this.loadProgressFromStorage();
         
         // Initialize when DOM is ready
         if (document.readyState === 'loading') {
@@ -79,6 +85,7 @@ class VulnerabilityAnalyzerApp {
             nextButton: document.getElementById('next-button'),
             progressText: document.getElementById('progress-text'),
             progressFill: document.getElementById('progress-fill'),
+            resetButton: document.getElementById('reset-button'),
             
             // Question display
             questionTitle: document.getElementById('question-title'),
@@ -86,6 +93,7 @@ class VulnerabilityAnalyzerApp {
             questionText: document.getElementById('question-text'),
             codeBlock: document.getElementById('code-block'),
             verifyButton: document.getElementById('verify-button'),
+            retryButton: document.getElementById('retry-button'),
             
             // Feedback
             answerCard: document.getElementById('answer-card'),
@@ -172,6 +180,16 @@ class VulnerabilityAnalyzerApp {
         // Verify button
         this.elements.verifyButton.addEventListener('click', () => this.verifyAnswer());
         
+        // Reset button
+        if (this.elements.resetButton) {
+            this.elements.resetButton.addEventListener('click', () => this.resetAllProgress());
+        }
+        
+        // Retry button
+        if (this.elements.retryButton) {
+            this.elements.retryButton.addEventListener('click', () => this.retryCurrentQuestion());
+        }
+        
         // Filter controls
         this.elements.difficultyFilter?.addEventListener('change', () => this.applyFilters());
         this.elements.categoryFilter?.addEventListener('change', () => this.applyFilters());
@@ -234,8 +252,16 @@ class VulnerabilityAnalyzerApp {
         
         // Use setTimeout to ensure DOM is fully updated before enabling selection
         setTimeout(() => {
-            // Then reset components for new question (this will work with the new code lines)
-            this.resetForNewQuestion(question);
+            // Check if this question was already answered
+            const savedAnswer = this.questionAnswers.get(question.id);
+            
+            if (savedAnswer) {
+                // Restore the previous answer state
+                this.restoreQuestionState(question, savedAnswer);
+            } else {
+                // Reset components for new question (this will work with the new code lines)
+                this.resetForNewQuestion(question);
+            }
         }, 0);
         
         // Update navigation
@@ -312,6 +338,11 @@ class VulnerabilityAnalyzerApp {
         this.elements.verifyButton.disabled = hasVulnerabilities; // Enable for secure code, disable for vulnerable code
         this.elements.verifyButton.textContent = hasVulnerabilities ? '🔍 Verificar Respuesta' : '🔍 Verificar Respuesta (Código Seguro)';
         
+        // Hide retry button
+        if (this.elements.retryButton) {
+            this.elements.retryButton.style.display = 'none';
+        }
+        
         // Trigger onSelectionChange to ensure button state is correct
         this.onSelectionChange([]);
     }
@@ -367,9 +398,14 @@ class VulnerabilityAnalyzerApp {
         // Update progress
         this.updateUserProgress(currentQuestion, validationResult);
         
-        // Disable verify button
+        // Disable verify button and show retry option
         this.elements.verifyButton.disabled = true;
         this.elements.verifyButton.textContent = '✅ Respuesta Verificada';
+        
+        // Show retry button
+        if (this.elements.retryButton) {
+            this.elements.retryButton.style.display = 'inline-block';
+        }
     }
 
     /**
@@ -459,6 +495,38 @@ class VulnerabilityAnalyzerApp {
     updateNavigation() {
         this.elements.prevButton.disabled = !this.questionManager.hasPrevious();
         this.elements.nextButton.disabled = !this.questionManager.hasNext();
+        
+        // Update button text with completion indicators
+        const currentIndex = this.questionManager.getCurrentQuestionIndex();
+        const totalQuestions = this.questionManager.getTotalQuestions();
+        
+        // Previous button
+        if (currentIndex > 0) {
+            const prevQuestionId = this.questionManager.getFilteredQuestions()[currentIndex - 1].id;
+            const isCompleted = this.userProgress.completed.has(prevQuestionId);
+            const isCorrect = this.userProgress.correct.has(prevQuestionId);
+            
+            let indicator = '';
+            if (isCompleted) {
+                indicator = isCorrect ? ' ✅' : ' ❌';
+            }
+            
+            this.elements.prevButton.innerHTML = `← Anterior${indicator}`;
+        }
+        
+        // Next button
+        if (currentIndex < totalQuestions - 1) {
+            const nextQuestionId = this.questionManager.getFilteredQuestions()[currentIndex + 1].id;
+            const isCompleted = this.userProgress.completed.has(nextQuestionId);
+            const isCorrect = this.userProgress.correct.has(nextQuestionId);
+            
+            let indicator = '';
+            if (isCompleted) {
+                indicator = isCorrect ? ' ✅' : ' ❌';
+            }
+            
+            this.elements.nextButton.innerHTML = `Siguiente${indicator} →`;
+        }
     }
 
     /**
@@ -538,8 +606,205 @@ class VulnerabilityAnalyzerApp {
      * @param {Object} answer - Answer data
      */
     saveQuestionProgress(question, answer) {
-        // In a real application, this would save to localStorage or server
+        // Save to memory
+        this.questionAnswers.set(question.id, {
+            selectedLines: [...answer.selectedLines],
+            validationResult: { ...answer.validationResult },
+            timestamp: answer.timestamp
+        });
+        
+        // Save to localStorage for persistence
+        this.saveProgressToStorage();
+        
         console.log('Saving progress for question:', question.id, answer);
+    }
+
+    /**
+     * Load progress from localStorage
+     */
+    loadProgressFromStorage() {
+        try {
+            const savedProgress = localStorage.getItem('vulnerability-analyzer-progress');
+            if (savedProgress) {
+                const data = JSON.parse(savedProgress);
+                
+                // Restore user progress
+                if (data.userProgress) {
+                    this.userProgress.completed = new Set(data.userProgress.completed || []);
+                    this.userProgress.correct = new Set(data.userProgress.correct || []);
+                    this.userProgress.incorrect = new Set(data.userProgress.incorrect || []);
+                }
+                
+                // Restore question answers
+                if (data.questionAnswers) {
+                    this.questionAnswers = new Map(data.questionAnswers);
+                }
+            }
+        } catch (error) {
+            console.warn('Failed to load progress from storage:', error);
+        }
+    }
+
+    /**
+     * Save progress to localStorage
+     */
+    saveProgressToStorage() {
+        try {
+            const data = {
+                userProgress: {
+                    completed: Array.from(this.userProgress.completed),
+                    correct: Array.from(this.userProgress.correct),
+                    incorrect: Array.from(this.userProgress.incorrect)
+                },
+                questionAnswers: Array.from(this.questionAnswers.entries()),
+                timestamp: new Date().toISOString()
+            };
+            
+            localStorage.setItem('vulnerability-analyzer-progress', JSON.stringify(data));
+        } catch (error) {
+            console.warn('Failed to save progress to storage:', error);
+        }
+    }
+
+    /**
+     * Restore question state for already answered questions
+     * @param {Question} question - Current question
+     * @param {Object} savedAnswer - Previously saved answer
+     */
+    restoreQuestionState(question, savedAnswer) {
+        // Reset selection manager first
+        this.selectionManager.reset();
+        
+        // Enable selection but mark as answered
+        this.selectionManager.enableSelection();
+        this.selectionManager.markAsAnswered();
+        
+        // Restore selected lines
+        if (savedAnswer.selectedLines && savedAnswer.selectedLines.length > 0) {
+            this.selectionManager.setSelectedLines(savedAnswer.selectedLines);
+        }
+        
+        // Show visual feedback on code lines (only if there are vulnerable lines)
+        const hasVulnerabilities = question.vulnerableLines.length > 0;
+        if (hasVulnerabilities) {
+            this.showCodeLineFeedback(savedAnswer.selectedLines, question.vulnerableLines);
+        }
+        
+        // Show detailed feedback
+        if (savedAnswer.validationResult.type === 'success') {
+            this.feedbackSystem.showSuccessFeedback(
+                question.vulnerabilityType,
+                question.explanation
+            );
+        } else {
+            this.feedbackSystem.showErrorFeedback(
+                savedAnswer.selectedLines,
+                question.vulnerableLines,
+                question.explanation
+            );
+        }
+        
+        // Set button states
+        this.elements.verifyButton.disabled = true;
+        this.elements.verifyButton.textContent = '✅ Respuesta Verificada';
+        
+        // Show retry button if it exists
+        if (this.elements.retryButton) {
+            this.elements.retryButton.style.display = 'inline-block';
+        }
+        
+        // Set current answer
+        this.currentAnswer = savedAnswer;
+    }
+
+    /**
+     * Reset all progress and start over
+     */
+    resetAllProgress() {
+        if (confirm('¿Estás seguro de que quieres resetear todo el progreso? Esta acción no se puede deshacer.')) {
+            // Clear memory
+            this.userProgress.completed.clear();
+            this.userProgress.correct.clear();
+            this.userProgress.incorrect.clear();
+            this.userProgress.categoryProgress.clear();
+            this.questionAnswers.clear();
+            this.currentAnswer = null;
+            
+            // Clear localStorage
+            localStorage.removeItem('vulnerability-analyzer-progress');
+            
+            // Reset current question
+            const currentQuestion = this.questionManager.getCurrentQuestion();
+            if (currentQuestion) {
+                this.resetForNewQuestion(currentQuestion);
+            }
+            
+            // Update UI
+            this.updateStats();
+            
+            this.showSuccess('Progreso reseteado correctamente. ¡Puedes empezar de nuevo!');
+        }
+    }
+
+    /**
+     * Retry current question (clear answer and allow new attempt)
+     */
+    retryCurrentQuestion() {
+        const currentQuestion = this.questionManager.getCurrentQuestion();
+        if (!currentQuestion) return;
+        
+        // Remove from progress tracking
+        this.userProgress.completed.delete(currentQuestion.id);
+        this.userProgress.correct.delete(currentQuestion.id);
+        this.userProgress.incorrect.delete(currentQuestion.id);
+        this.questionAnswers.delete(currentQuestion.id);
+        this.currentAnswer = null;
+        
+        // Save updated progress
+        this.saveProgressToStorage();
+        
+        // Reset question state
+        this.resetForNewQuestion(currentQuestion);
+        
+        // Update stats
+        this.updateStats();
+        
+        // Hide retry button
+        if (this.elements.retryButton) {
+            this.elements.retryButton.style.display = 'none';
+        }
+    }
+
+    /**
+     * Show success message
+     * @param {string} message - Success message
+     */
+    showSuccess(message) {
+        // Create success notification
+        const successDiv = document.createElement('div');
+        successDiv.className = 'success-notification';
+        successDiv.textContent = message;
+        successDiv.style.cssText = `
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #10b981;
+            color: white;
+            padding: 1rem;
+            border-radius: 8px;
+            z-index: 1000;
+            max-width: 300px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        `;
+        
+        document.body.appendChild(successDiv);
+        
+        // Remove after 3 seconds
+        setTimeout(() => {
+            if (successDiv.parentNode) {
+                successDiv.parentNode.removeChild(successDiv);
+            }
+        }, 3000);
     }
 
     /**
@@ -1221,6 +1486,18 @@ function nextQuestion() {
 function verifyAnswer() {
     if (window.vulnerabilityApp) {
         window.vulnerabilityApp.verifyAnswer();
+    }
+}
+
+function resetAllProgress() {
+    if (window.vulnerabilityApp) {
+        window.vulnerabilityApp.resetAllProgress();
+    }
+}
+
+function retryCurrentQuestion() {
+    if (window.vulnerabilityApp) {
+        window.vulnerabilityApp.retryCurrentQuestion();
     }
 }
 
